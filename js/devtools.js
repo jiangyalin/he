@@ -6,7 +6,7 @@ chrome.devtools.panels.create('MyPanel', 'icon.png', 'mypanel.html', panel => {
 
 chrome.devtools.network.onRequestFinished.addListener(function (request) {
   request.getContent(function (content) {
-    if (request.request.url.indexOf('http://192.168.3.4:8010/api') === -1) return false
+    if (request.request.url.indexOf('http://192.168.3.104:9001') === -1) return false
     if (request.request.method === 'OPTIONS') return false
     chrome.runtime.sendMessage({
       name: 'panel',

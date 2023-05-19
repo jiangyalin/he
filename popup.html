@@ -1,31 +1,78 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>jiangyalin</title>
+  <title>he</title>
   <meta charset="utf-8"/>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <link rel="stylesheet" href="css/theme.css"/>
   <style>
     body {
+      padding: 10px;
       width: 260px;
+      height: 400px;
+      box-sizing: border-box;
     }
 
-    .m-group {
+    .m-list {
+      overflow-y: auto;
+      margin-top: 10px;
+      width: 240px;
+      height: 300px;
+    }
+
+    .m-list .u-li {
       display: flex;
+      width: 100%;
+      height: 24px;
+      line-height: 24px;
+      justify-content: space-between;
     }
 
-    .m-group button {
-      margin-right: 10px;
+    .m-list .u-li .u-name {
+      overflow: hidden;
+      width: calc(100% - 80px);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .m-list .u-btn-gp {
+    }
+
+    .m-list .u-btn {
+      padding: 0 4px;
+      color: #016499;
+      background-color: #fff;
+      border: 1px solid #016499;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+
+    .m-refresh-btn {
+      margin-top: 20px;
+      padding: 0 4px;
+      color: #016499;
+      background-color: #fff;
+      border: 1px solid #016499;
+      border-radius: 2px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-<h1>这是测试数据</h1>
-<!--<a href="#" id="open_background">打开后台</a>-->
-<div class="m-group">
-  <button class="j-website-btn" type="button">添加网站白名单</button>
-  <button class="j-web-page-btn" type="button">添加网页白名单</button>
-</div>
+<h1>he</h1>
+
+<button class="m-refresh-btn j-refresh" type="button">刷新</button>
+
+<ul class="m-list j-list">
+<!--  <li class="u-li j-li" data-api="/api/v1/user/33455432231" data-name="/api/v1/user/33455432231">-->
+<!--    <p class="u-name">/api/v1/user/33455432231</p>-->
+<!--    <div class="u-btn-gp">-->
+<!--      <button class="u-btn j-copy" type="button">复制</button>-->
+<!--      <button class="u-btn j-down" type="button">下载</button>-->
+<!--    </div>-->
+<!--  </li>-->
+</ul>
 <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
-<!--<script type="text/javascript" src="js/popup.js"></script>-->
+<script type="text/javascript" src="js/popup.js"></script>
 </body>
 </html>

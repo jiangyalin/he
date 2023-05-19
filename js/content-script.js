@@ -108,66 +108,7 @@ function encryption (vNode, propTag = '') {
 }
 
 const init = () => {
-  // $('body').attr('be-whitelist', checkWhitelist()).attr('be-load-end', true)
-  //
-  // $('.j-website-btn').attr('data-active', checkWhitelistWebsite())
-  // $('.j-web-page-btn').attr('data-active', checkWhitelistWebPage())
-
-
-// console.log('chrome.webRequestBlocking', chrome.tabs)
-// chrome.webRequest.onCompleted.addListener(
-//     function (details) {
-//
-//       if (details.statusCode == 200) {
-//         sendMessageTo("fillingPass", details.tabId, (e) => {
-//           console.log('查询已完成');
-//         })
-//       }
-//     },
-//
-//     // {urls: ["*://192.168.3.104:7077/*"]}  //监听页面请求,你也可以通过*来匹配。
-//     {urls: ["*://117.144.58.62:7013/getCaptchaOpen"]}  //监听页面请求,你也可以通过*来匹配。
-// )
-
-
-  // chrome.webRequest.onBeforeRequest.addListener(function (details) {
-  //   console.log('details', details)
-  // }, {}, []);
 }
 
 window.onload = function () {
-  // const bodyDom = $('body')
-  // const vRoot = getVNode(document.querySelector('body'))
-  //
-  // if (!checkWhitelist()) {
-  //   const realRoot = parseVNode(encryption(vRoot))
-  //   bodyDom.html(realRoot)
-  //   bodyDom.html($('[data-body-mack="true"]').html())
-  // }
-  // bodyDom.append(boxDom())
-
-  init()
-  // $('body').on('click', 'img', function () {
-  //   $(this).attr('src', '')
-  // })
-
-  // window.localStorage.setItem('shoppingCartMap', JSON.stringify(this.shoppingCart))
-
-  // bodyDom.on('click', '.j-website-btn', () => {
-  //   window.localStorage.setItem('be-whitelist-website', !checkWhitelistWebsite())
-  //
-  //   // const realRoot = parseVNode(encryption(vRoot))
-  //   // bodyDom.html(realRoot)
-  //
-  //   init()
-  // })
-  //
-  // bodyDom.on('click', '.j-web-page-btn', () => {
-  //   window.localStorage.setItem('be-whitelist-web-page', !checkWhitelistWebPage())
-  //
-  //   // const realRoot = parseVNode(encryption(vRoot))
-  //   // bodyDom.html(realRoot)
-  //
-  //   init()
-  // })
 }

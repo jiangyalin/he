@@ -1,39 +1,74 @@
-// 打开后台页
-$('#open_background').click(e => {
-  console.log('这是测试数据')
-  window.open(chrome.extension.getURL('background.html'))
+const dom = $('.j-list')
+let listData = []
+
+dom.on('click', '.j-copy', function () {
+  const api = $(this).parents('.j-li').attr('data-api')
+  const item = listData.find(item => item.url === api)
+  navigator.clipboard.writeText(JSON.stringify(item.content, null, 2))
 })
 
-const getWhitelist = function () {
-  return JSON.parse(window.localStorage.getItem('be-whitelist') || '{ website: [], webPage: [] }')
+dom.on('click', '.j-down', function () {
+  const api = $(this).parents('.j-li').attr('data-api')
+  const urlObj = urlToObj(api)
+  const fileName = urlObj.api + '.json'
+  const item = listData.find(item => item.url === api)
+  funDownload(JSON.stringify(item, null, 2), fileName)
+})
+
+$('.j-refresh').click(() => {
+  init()
+})
+
+window.onload = () => {
+  init()
 }
 
-const setWhitelist = function ({ website = [], webPage = [] }) {
-  return window.localStorage.setItem('be-whitelist', JSON.stringify({
-    website,
-    webPage
-  }))
-}
-
+// 初始化
 const init = () => {
-  const checkWhitelist = window.localStorage.getItem('be-whitelist-website') === 'true' || window.localStorage.getItem('be-whitelist-web-page') === 'true'
-  $('body').attr('be-whitelist', checkWhitelist)
+  chrome.storage.local.get('list', res => {
+    listData = res.list
+    const listDom = res.list.map(item => {
+      const urlObj = urlToObj(item.url)
+      return `<li class="u-li j-li" data-api="${item.url}">
+                <p class="u-name">/${urlObj.api}</p>
+                <div class="u-btn-gp">
+                  <button class="u-btn j-copy" type="button">复制</button>
+                  <button class="u-btn j-down" type="button">下载</button>
+                </div>
+              </li>`
+    })
+
+    $('.j-list').html(listDom.join(''))
+  })
 }
 
-console.log('333')
-$('.j-website-btn').click(() => {
-  console.log('111')
-  const checkWhitelist = window.localStorage.getItem('be-whitelist-website') === 'true'
-  window.localStorage.setItem('be-whitelist-website', !checkWhitelist)
+const urlToObj = url => {
+  const obj = {}
+  const arr = url.split('?')
+  obj.url = arr[0]
+  obj.api = arr[0].split('/').filter((item, index) => index > 2).join('/')
+  obj.params = arr[1] ? arr[1].split('&').map(item => {
+    const _arr = item.split('=')
+    return {
+      key: _arr[0],
+      value: _arr[1]
+    }
+  }) : []
+  return obj
+}
 
-  init()
-})
-
-
-$('.j-web-page-btn').click(() => {
-  console.log('222')
-  const checkWhitelist = window.localStorage.getItem('be-whitelist-web-page') === 'true'
-  window.localStorage.setItem('be-whitelist-web-page', !checkWhitelist)
-
-  init()
-})
+// 生成下载文件并下载
+const funDownload = (content, filename) => {
+  // 创建隐藏的可下载链接
+  const eleLink = document.createElement('a')
+  eleLink.download = filename
+  eleLink.style.display = 'none'
+  // 字符内容转变成blob地址
+  const blob = new Blob([content])
+  eleLink.href = URL.createObjectURL(blob)
+  // 触发点击
+  document.body.appendChild(eleLink)
+  eleLink.click()
+  // 然后移除
+  document.body.removeChild(eleLink)
+}
