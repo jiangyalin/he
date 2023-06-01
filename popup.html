@@ -8,7 +8,7 @@
   <style>
     body {
       padding: 10px;
-      width: 260px;
+      width: 300px;
       height: 400px;
       box-sizing: border-box;
     }
@@ -16,8 +16,8 @@
     .m-list {
       overflow-y: auto;
       margin-top: 10px;
-      width: 240px;
-      height: 300px;
+      width: 100%;
+      max-height: 280px;
     }
 
     .m-list .u-li {
@@ -47,8 +47,36 @@
       cursor: pointer;
     }
 
+    .m-list .u-li[data-err="true"] .u-name {
+      color: brown;
+    }
+
     .m-refresh-btn {
       margin-top: 20px;
+      padding: 0 4px;
+      color: #016499;
+      background-color: #fff;
+      border: 1px solid #016499;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+
+    .m-it-gp {
+      display: flex;
+      margin-top: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .m-it-gp .u-p {
+    }
+
+    .m-it-gp .u-it {
+      margin: 0 10px;
+      flex: 1;
+    }
+
+    .m-it-gp .u-filter-btn {
       padding: 0 4px;
       color: #016499;
       background-color: #fff;
@@ -61,8 +89,16 @@
 <body>
 <h1>he</h1>
 
-<button class="m-refresh-btn j-refresh" type="button">刷新</button>
-
+<div class="m-btn-gp">
+  <button class="m-refresh-btn j-refresh" type="button">刷新</button>
+  <button class="m-refresh-btn j-empty" type="button">清空</button>
+  <button class="m-refresh-btn j-down-all" type="button">导出全部</button>
+</div>
+<lable class="m-it-gp">
+  <p class="u-p">过滤器</p>
+  <input class="u-it j-filter-it" type="text" value="" />
+  <button class="u-filter-btn j-filter-btn" type="button">确定</button>
+</lable>
 <ul class="m-list j-list">
 <!--  <li class="u-li j-li" data-api="/api/v1/user/33455432231" data-name="/api/v1/user/33455432231">-->
 <!--    <p class="u-name">/api/v1/user/33455432231</p>-->

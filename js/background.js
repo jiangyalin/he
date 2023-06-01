@@ -11,16 +11,24 @@ chrome.contextMenus.create({
   }
 })
 
-const filters = {
-  urls: ['https://192.168.3.104:7077/*', 'http://192.168.3.104:7077/*']
+const urlToObj = url => {
+  const obj = {}
+  const arr = url.split('?')
+  obj.url = arr[0]
+  obj.api = arr[0].split('/').filter((item, index) => index > 2).join('/')
+  obj.params = arr[1] ? arr[1].split('&').map(item => {
+    const _arr = item.split('=')
+    return {
+      key: _arr[0],
+      value: _arr[1]
+    }
+  }) : []
+  return obj
 }
 
-const list = []
-
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  // console.log('request.content', request.content)
-  const url = request.content.url
-  const content = JSON.parse(request.content.content || '{}')
+const analyzePanelList = request => {
+  const api = urlToObj(request.content.url).api
+  const content = JSON.parse(request.content?.content || '{}')
   const query = {}
   request.content.request.request.queryString.forEach(item => {
     query[item.name] = item.value
@@ -30,20 +38,26 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   const _request = {
     query: query,
     headers: headers,
-    method: request.content.request.request.method
+    method: request.content.request.request.method,
+    body: JSON.parse(request.content?.request?.request?.postData?.text || '{}')
   }
-  if (!list.find(item => item.url === url)) {
+  if (!list.find(item => item.url === api)) {
     list.push({
-      url,
+      url: api,
       content: content,
-      request: _request
+      request: _request,
+      returnTime: new Date().getTime()
     })
   } else {
-    list.find(item => item.url === url).content = content
-    list.find(item => item.url === url).request = _request
+    list.find(item => item.url === api).content = content
+    list.find(item => item.url === api).request = _request
+    list.find(item => item.url === api).returnTime = new Date().getTime()
   }
   chrome.storage.local.set({ list })
-  // chrome.storage.local.get('list', function (res) {
-  //   console.log('res', res)
-  // })
+}
+
+const list = []
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  if (request.name === 'panel-list') analyzePanelList(request)
 })

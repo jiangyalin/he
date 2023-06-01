@@ -15,7 +15,20 @@ dom.on('click', '.j-down', function () {
   funDownload(JSON.stringify(item, null, 2), fileName)
 })
 
+// 设置过滤器
+$('.j-filter-btn').click(function () {
+  const value = $('.j-filter-it').val()
+  chrome.storage.local.set({ filterUrl: value })
+})
+
+// 刷新
 $('.j-refresh').click(() => {
+  init()
+})
+
+// 清空
+$('.j-empty').click(() => {
+  chrome.storage.local.set({ list: [] })
   init()
 })
 
@@ -27,10 +40,9 @@ window.onload = () => {
 const init = () => {
   chrome.storage.local.get('list', res => {
     listData = res.list
-    const listDom = res.list.map(item => {
-      const urlObj = urlToObj(item.url)
-      return `<li class="u-li j-li" data-api="${item.url}">
-                <p class="u-name">/${urlObj.api}</p>
+    const listDom = res.list.sort((a, b) => b.returnTime - a.returnTime).map(item => {
+      return `<li class="u-li j-li" data-api="${item.url}" data-err="${item.content.code !== 200}">
+                <p class="u-name">/${item.url}</p>
                 <div class="u-btn-gp">
                   <button class="u-btn j-copy" type="button">复制</button>
                   <button class="u-btn j-down" type="button">下载</button>
@@ -40,6 +52,14 @@ const init = () => {
 
     $('.j-list').html(listDom.join(''))
   })
+
+  try {
+    chrome.storage.local.get('filterUrl', res => {
+      $('.j-filter-it').val(res.filterUrl)
+    })
+  } catch (err) {
+    $('.j-filter-it').val('http://192.168.3.104:9001')
+  }
 }
 
 const urlToObj = url => {
