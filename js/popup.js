@@ -1,16 +1,21 @@
 const dom = $('.j-list')
 let listData = []
 
+// 复制
 dom.on('click', '.j-copy', function () {
   const api = $(this).parents('.j-li').attr('data-api')
   const item = listData.find(item => item.url === api)
   navigator.clipboard.writeText(JSON.stringify(item.content, null, 2))
+  $(this).text('ok')
+  setTimeout(() => {
+    $(this).text('复制')
+  }, 600)
 })
 
+// 下载
 dom.on('click', '.j-down', function () {
   const api = $(this).parents('.j-li').attr('data-api')
-  const urlObj = urlToObj(api)
-  const fileName = urlObj.api + '.json'
+  const fileName = api + '.json'
   const item = listData.find(item => item.url === api)
   funDownload(JSON.stringify(item, null, 2), fileName)
 })
@@ -19,17 +24,29 @@ dom.on('click', '.j-down', function () {
 $('.j-filter-btn').click(function () {
   const value = $('.j-filter-it').val()
   chrome.storage.local.set({ filterUrl: value })
+  $(this).text('ok')
+  setTimeout(() => {
+    $(this).text('确定')
+  }, 600)
 })
 
 // 刷新
-$('.j-refresh').click(() => {
+$('.j-refresh').click(function () {
   init()
+  $(this).text('ok')
+  setTimeout(() => {
+    $(this).text('刷新')
+  }, 600)
 })
 
 // 清空
-$('.j-empty').click(() => {
+$('.j-empty').click(function () {
   chrome.storage.local.set({ list: [] })
   init()
+  $(this).text('ok')
+  setTimeout(() => {
+    $(this).text('清空')
+  }, 600)
 })
 
 window.onload = () => {
