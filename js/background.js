@@ -35,6 +35,7 @@ const analyzePanelList = request => {
   })
   const headers = {}
   headers.Authorization = request.content.request.request.headers.find(item => item.name === 'Authorization')?.value || ''
+  headers.access_token = request.content.request.request.headers.find(item => item.name === 'access_token')?.value || ''
   const _request = {
     query: query,
     headers: headers,

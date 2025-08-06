@@ -56,8 +56,8 @@ window.onload = () => {
 // 初始化
 const init = () => {
   chrome.storage.local.get('list', res => {
-    listData = res.list
-    const listDom = res.list.sort((a, b) => b.returnTime - a.returnTime).map(item => {
+    listData = res.list || []
+    const listDom = (res.list || []).sort((a, b) => b.returnTime - a.returnTime).map(item => {
       return `<li class="u-li j-li" data-api="${item.url}" data-err="${item.content.code !== 200}">
                 <p class="u-name">/${item.url}</p>
                 <div class="u-btn-gp">
