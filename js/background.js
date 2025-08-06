@@ -1,7 +1,15 @@
 //-------------------- 右键菜单演示 ------------------------//
-chrome.contextMenus.create({
-  title: '测试右键菜单',
-  onclick: (e, a, b) => {
+// 在Service Worker中，需要先清除现有菜单避免重复ID错误
+chrome.contextMenus.removeAll(() => {
+  chrome.contextMenus.create({
+    id: 'test-menu',
+    title: '测试右键菜单'
+  })
+})
+
+// V3中需要使用事件监听器替代onclick回调
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === 'test-menu') {
     chrome.notifications.create(null, {
       type: 'basic',
       iconUrl: 'icon.png',
@@ -60,5 +68,9 @@ const analyzePanelList = request => {
 const list = []
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  if (request.name === 'panel-list') analyzePanelList(request)
+  if (request.name === 'panel-list') {
+    analyzePanelList(request)
+    sendResponse({status: 'processed'})
+    return true
+  }
 })
