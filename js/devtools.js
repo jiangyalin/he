@@ -28,7 +28,7 @@ chrome.devtools.network.onRequestFinished.addListener(function (request) {
       return false
     }
 
-    chrome.runtime?.sendMessage({
+    chrome.runtime.sendMessage({
       name: 'panel-list',
       tabId: chrome.devtools.inspectedWindow.tabId,
       content: {
