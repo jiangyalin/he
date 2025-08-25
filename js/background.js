@@ -35,8 +35,13 @@ const urlToObj = url => {
 }
 
 const analyzePanelList = request => {
-  const api = urlToObj(request.content.url).api
-  const content = JSON.parse(request.content?.content || '{}')
+  const api = urlToObj(request?.content?.url).api
+  let content = {}
+  try {
+    content = JSON.parse(request?.content?.content || '{}')
+  } catch (e) {
+    content = {}
+  }
   const query = {}
   request.content.request.request.queryString.forEach(item => {
     query[item.name] = item.value
